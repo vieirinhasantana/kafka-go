@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	ckafka "gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
+	ckafka "github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
 type KafkaProcessor struct {
@@ -36,7 +36,6 @@ func (k *KafkaProcessor) Consume() {
 			fmt.Printf("Message on %s: %s\n", msg.TopicPartition, string(msg.Value))
 		} else {
 			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
-			c.Close()
 		}
 	}
 }

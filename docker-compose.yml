@@ -1,18 +1,22 @@
 version: '3'
 services:
-  app-go-consumer:
-    image: golang:alpine3.13
+  app-consumer:
+    image: golang:stretch
+    depends_on:
+      - kafka
     volumes:
-      - .:/go/src/
-    working_dir: /go/src/
-    command: go run ./github.com/vieirinhasantana/kafka-go/cmd/consumer/main.go
+      - .:/go/src/github.com/vieirinhasantana/kafka-go
+    working_dir: /go/src/github.com/vieirinhasantana/kafka-go/cmd/consumer/
+    command: go run main.go
 
-  # app-go-producer:
-  #   image: golang:alpine3.13
-  #   volumes:
-  #     - .:/go/src/kafka-go
-  #   working_dir: /go/src/kafka-go
-  #   command: go run ./cmd/producer/main.go
+  app-producer:
+    image: golang:stretch
+    depends_on:
+      - kafka
+    volumes:
+      - .:/go/src/github.com/vieirinhasantana/kafka-go
+    working_dir: /go/src/github.com/vieirinhasantana/kafka-go/cmd/producer/
+    command: go run main.go
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest

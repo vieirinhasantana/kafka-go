@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/vieirinhasantana/kafka-go/pkg/kafka"
-)
+import "github.com/vieirinhasantana/kafka-go/pkg/kafka"
 
 func main() {
 	kafkaProcessor := kafka.NewKafkaProcessor()
