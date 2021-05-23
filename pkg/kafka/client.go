@@ -11,6 +11,7 @@ type KafkaProcessor struct {
 	ConsumerTopics   []string
 	BootstrapServers string
 	ConsumerGroup    string
+	Topic            string
 }
 
 func NewKafkaProcessor() *KafkaProcessor {
@@ -38,4 +39,26 @@ func (k *KafkaProcessor) Consume() {
 			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
 		}
 	}
+}
+
+func (k *KafkaProcessor) Producer() {
+	p, err := ckafka.NewProducer(&ckafka.ConfigMap{
+		"bootstrap.servers": k.BootstrapServers,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	defer p.Close()
+
+	for _, word := range []string{"Welcome", "to", "the", "Confluent", "Kafka", "Golang", "client"} {
+		p.Produce(&ckafka.Message{
+			TopicPartition: ckafka.TopicPartition{Topic: &k.Topic, Partition: ckafka.PartitionAny},
+			Value:          []byte(word),
+		}, nil)
+		log.Printf("New event send. %s", word)
+	}
+
+	p.Flush(15 * 1000)
+
 }

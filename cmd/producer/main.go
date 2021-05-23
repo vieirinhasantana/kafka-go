@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import "github.com/vieirinhasantana/kafka-go/pkg/kafka"
 
 func main() {
-	fmt.Println("Start")
+	kafkaProcessor := kafka.NewKafkaProcessor()
+	kafkaProcessor.BootstrapServers = "kafka:9092"
+	kafkaProcessor.Topic = "products"
+
+	kafkaProcessor.Producer()
 }
